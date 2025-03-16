@@ -1,0 +1,66 @@
+{% extends 'odontologia_app/base.html' %}
+
+{% block title %}Lista de Pacientes{% endblock %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pacientes</title>
+    <link href="{%static 'bootstrap.min.css'%}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Lista de Pacientes</h1>
+        
+        <form method="get" action="{% url 'lista_pacientes' %}" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Buscar por nombre o cédula" value="{{ request.GET.q }}">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
+
+        <a href="{% url 'crear_paciente' %}" class="btn btn-primary mb-3">Crear Nuevo Paciente</a>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cédula</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Teléfono</th>
+                    <th>Sexo</th>
+                    <th>Estado Civil</th>
+                    <th>Ocupación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paciente in pacientes %}
+                <tr>
+                    <td>{{ paciente.id }}</td>
+                    <td>{{ paciente.cedula }}</td>
+                    <td>{{ paciente.nombre }}</td>
+                    <td>{{ paciente.edad }}</td>
+                    <td>{{ paciente.telefono }}</td>
+                    <td>{{ paciente.sexo }}</td>
+                    <td>{{ paciente.estado_civil|yesno:"Casado,Soltero" }}</td>
+                    <td>{{ paciente.ocupacion }}</td>
+                    <td>
+                        <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <button class="btn btn-danger btn-sm" onclick="if (confirm('¿Estás seguro de que deseas eliminar este paciente?')) { window.location.href='{% url 'eliminar_paciente' paciente.id %}' }">Eliminar</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}

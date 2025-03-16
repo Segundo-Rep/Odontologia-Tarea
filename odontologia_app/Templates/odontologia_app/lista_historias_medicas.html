@@ -1,0 +1,127 @@
+{% extends 'odontologia_app/base.html' %}
+
+{% block title %}Lista de Historias{% endblock %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Historias Médicas - Odontología</title>
+    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet">
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .btn-action {
+            margin: 2px;
+        }
+        .descripcion-cell {
+            max-width: 200px;
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Lista de Historias Médicas</h1>
+        
+        <div class="text-end mb-3">
+            <a href="{% url 'crear_historia_medica' %}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Añadir Historia Médica
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Examinador</th>
+                        <th>Fecha de Creación</th>
+                        <th>Diabetes</th>
+                        <th>T.B.C.</th>
+                        <th>Hipertensión</th>
+                        <th>Artritis</th>
+                        <th>Alergias</th>
+                        <th>Neuralgias</th>
+                        <th>Hemorragias</th>
+                        <th>Hepatitis</th>
+                        <th>Sinusitis</th>
+                        <th>Trastornos Mentales</th>
+                        <th>Enfermedades Eruptivas</th>
+                        <th>Enfermedades Renales</th>
+                        <th>Parotiditis</th>
+                        <th>Hábitos</th>
+                        <th>Tipo Antecedente</th>
+                        <th>Descripción Antecedente</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for historia in historias %}
+                    <tr>
+                        <td>{{ historia.paciente.nombre }}</td>
+                        <td>{{ historia.examinador.nombre }}</td>
+                        <td>{{ historia.fecha_creacion|date:"d/m/Y" }}</td>
+                        <td>{{ historia.anamnesis.diabetes|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.tbc|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.hipertension|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.artritis|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.alergias|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.neuralgias|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.hemorragias|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.hepatitis|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.sinusitis|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.trastorno_mentales|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.enfermedades_eruptivas|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.enfermedades_renales|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>{{ historia.anamnesis.parotiditis|yesno:"Sí,No"|default:"-" }}</td>
+                        <td>
+                            {% if historia.anamnesis.habitos.all %}
+                                {{ historia.anamnesis.habitos.first.descripcion|default:"-" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if historia.anamnesis.antecedentes_familiares.all %}
+                                {{ historia.anamnesis.antecedentes_familiares.first.get_tipo_display|default:"-" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if historia.anamnesis.antecedentes_familiares.all %}
+                                {{ historia.anamnesis.antecedentes_familiares.first.descripcion|default:"-" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'editar_historia_medica' historia.id %}" class="btn btn-warning btn-sm btn-action" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'eliminar_historia_medica' historia.id %}" 
+                               class="btn btn-danger btn-sm btn-action" 
+                               title="Eliminar"
+                               onclick="return confirm('¿Estás seguro de que deseas eliminar esta historia médica?');">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script></body>
+</html>
+{% endblock %} 

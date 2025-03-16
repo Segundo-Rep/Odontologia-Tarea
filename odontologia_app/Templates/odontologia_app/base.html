@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Odontología App{% endblock %}</title>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <link href="{% static 'bootstrap.min.css' %}"" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet">
+    <style>
+        #sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #343a40;
+            transition: left 0.3s;
+            padding-top: 20px;
+        }
+        #sidebar.active {
+            left: 0;
+        }
+
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+        }
+        #content.active {
+            margin-left: 250px;
+        }
+        #sidebar a {
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+        }
+        #sidebar a:hover {
+            background-color: #495057;
+        }
+        #sidebarToggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="sidebarToggle" class="btn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="sidebar">
+        <br>
+        <br>
+        <a href="{%url  'principal'%}"><i class="fa fa-amazon"></i>Inicio</a>
+        <a href="{% url 'lista_pacientes' %}"><i class="fas fa-users"></i> Pacientes</a>
+        <a href="{% url 'crear_paciente' %}"><i class="fas fa-user-plus"></i> Crear Paciente</a>
+        <a href="{% url 'lista_historias_medicas' %}"><i class="fas fa-list"></i> Historias Médicas</a>
+    </div>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="{% static 'bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'popper.min.js'%}"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            var sidebar = document.getElementById('sidebar');
+            var content = document.getElementById('content');
+            sidebar.classList.toggle('active');
+            content.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

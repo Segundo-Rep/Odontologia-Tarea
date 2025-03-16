@@ -1,0 +1,71 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completar Anamnesis - Odontología</title>
+    <link href="{%static 'bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet">
+    <style>
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #0d6efd; 
+            color: white;
+            font-size: 1.25rem;
+        }
+        .btn-custom {
+            width: 120px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3 class="card-title mb-0">Completar Anamnesis</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="mb-4">
+                                <h4 class="mb-3 text-primary">Hábitos</h4>
+                                <div class="form-group">
+                                    {{ habitos_form.as_p }}
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="mb-3 text-primary">Antecedentes Familiares</h4>
+                                <div class="form-group">
+                                    {{ antecedentes_form.as_p }}
+                                </div>
+                            </div>
+
+                            <!-- Pie de la tarjeta (botones) -->
+                            <div class="card-footer text-center">
+                                <button type="submit" class="btn btn-primary btn-custom">
+                                    <i class="fas fa-save"></i> Guardar
+                                </button>
+                                <a href="{% url 'lista_historias_medicas' %}" class="btn btn-secondary btn-custom">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script></body>
+</html>

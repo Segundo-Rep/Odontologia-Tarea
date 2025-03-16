@@ -1,0 +1,147 @@
+{% extends 'odontologia_app/base.html' %}
+
+{% block title %}Crear Paciente{% endblock %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Paciente</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Crear Nuevo Paciente</h1>
+        <form method="post" class="card p-4 shadow">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="cedula">Cédula:</label>
+                <input type="text" id="cedula" name="cedula" class="form-control" required>
+            </div>
+            <!-- Resto del formulario -->
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" name="edad" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="sexo">Sexo:</label>
+                <select id="sexo" name="sexo" class="form-control" required>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                    <option value="O">Otro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="estado_civil">Estado Civil:</label>
+                <select id="estado_civil" name="estado_civil" class="form-control" required>
+                    <option value="true">Casado</option>
+                    <option value="false">Soltero</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ocupacion">Ocupación:</label>
+                <input type="text" id="ocupacion" name="ocupacion" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">Crear Paciente</button>
+        </form>
+
+        <br>
+        <a href="{% url 'lista_pacientes' %}" class="btn btn-outline-secondary">Volver a la lista de pacientes</a>
+    </div>
+
+    <!-- Modal para crear Representante -->
+    <div id="crearRepresentanteModal" class="modal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear Representante</h5>
+                    <button type="button" class="close" onclick="cerrarModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="crearRepresentanteForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="cedula_representante_crear">Cédula:</label>
+                            <input type="text" id="cedula_representante_crear" name="cedula" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre_representante_crear">Nombre:</label>
+                            <input type="text" id="nombre_representante_crear" name="nombre" class="form-control" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="crearRepresentante()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para abrir el modal
+        function abrirModal() {
+            document.getElementById('crearRepresentanteModal').style.display = 'block';
+        }
+
+        // Función para cerrar el modal
+        function cerrarModal() {
+            document.getElementById('crearRepresentanteModal').style.display = 'none';
+        }
+
+        // Función para crear un representante
+        function crearRepresentante() {
+            const cedula = document.getElementById('cedula_representante_crear').value;
+            const nombre = document.getElementById('nombre_representante_crear').value;
+
+            if (!cedula || !nombre) {
+                alert('Por favor, complete todos los campos.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('cedula', cedula);
+            formData.append('nombre', nombre);
+
+            fetch('{% url "crear_representante" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    // Autocompletar la cédula del representante en el formulario principal
+                    document.getElementById('cedula_representante').value = cedula;
+                    alert('Representante creado correctamente.');
+                    cerrarModal();  // Cerrar el modal
+                } else {
+                    throw new Error(data.message || 'Error al crear el representante.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message || 'Error al crear el representante.');
+            });
+        }
+    </script>
+</body>
+</html>
+{% endblock %}

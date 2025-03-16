@@ -1,0 +1,66 @@
+{% extends 'odontologia_app/base.html' %}
+
+{% block title %}Lista de Pacientes{% endblock %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Paciente</title>
+    <link href="
+{%static 'bootstrap.min.css'%}
+" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Editar Paciente</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="cedula" class="form-label">Cédula:</label>
+                <input type="text" id="cedula" name="cedula" class="form-control" value="{{ paciente.cedula }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" value="{{ paciente.nombre }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="edad" class="form-label">Edad:</label>
+                <input type="number" id="edad" name="edad" class="form-control" value="{{ paciente.edad }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" class="form-control" value="{{ paciente.telefono }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="sexo" class="form-label">Sexo:</label>
+                <select id="sexo" name="sexo" class="form-select" required>
+                    <option value="M" {% if paciente.sexo == 'M' %}selected{% endif %}>Masculino</option>
+                    <option value="F" {% if paciente.sexo == 'F' %}selected{% endif %}>Femenino</option>
+                    <option value="O" {% if paciente.sexo == 'O' %}selected{% endif %}>Otro</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="estado_civil" class="form-label">Estado Civil:</label>
+                <select id="estado_civil" name="estado_civil" class="form-select" required>
+                    <option value="true" {% if paciente.estado_civil %}selected{% endif %}>Casado</option>
+                    <option value="false" {% if not paciente.estado_civil %}selected{% endif %}>Soltero</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="ocupacion" class="form-label">Ocupación:</label>
+                <input type="text" id="ocupacion" name="ocupacion" class="form-control" value="{{ paciente.ocupacion }}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+            <a href="{% url 'lista_pacientes' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,59 @@
+
+{% extends 'odontologia_app/base.html' %}
+
+{% block title %}Editar Historia Médica{% endblock %}
+{% block content %}
+{% load static %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Editar Historia Médica</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Datos de la Historia Médica</h4>
+            </div>
+            <div class="card-body">
+                {{ historia_form.as_p }}
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Anamnesis</h4>
+            </div>
+            <div class="card-body">
+                {{ anamnesis_form.as_p }}
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Hábitos</h4>
+            </div>
+            <div class="card-body">
+                {{ habitos_form.as_p }}
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Antecedentes Familiares</h4>
+            </div>
+            <div class="card-body">
+                {{ antecedentes_form.as_p }}
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar Cambios
+            </button>
+            <a href="{% url 'lista_historias_medicas' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

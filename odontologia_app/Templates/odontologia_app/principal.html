@@ -1,0 +1,35 @@
+{% extends 'odontologia_app/base.html' %}
+
+{% block title %}Pantalla Principal{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container mt-4">
+    <h1 class="display-4">Bienvenido, {{ user.nombre }}</h1>
+    <p class="lead">Aquí puedes gestionar tus pacientes y acceder a todas las funcionalidades del sistema.</p>
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Pacientes</h5>
+                    <p class="card-text">Gestiona la información de tus pacientes.</p>
+                    <a href="{% url 'lista_pacientes' %}" class="btn btn-primary">
+                        <i class="fas fa-users"></i> Ver Pacientes
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Crear Paciente</h5>
+                    <p class="card-text">Agrega nuevos pacientes al sistema.</p>
+                    <a href="{% url 'crear_paciente' %}" class="btn btn-success">
+                        <i class="fas fa-user-plus"></i> Crear Paciente
+                    </a>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
